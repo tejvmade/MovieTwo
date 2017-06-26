@@ -1,24 +1,21 @@
 package com.example.movietwo.data;
 
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Movie;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.example.movietwo.interfaces.DBUpdateListener;
-import com.example.movietwo.uiux.DetailFragment;
+import com.example.movietwo.models.Movie;
 
 public class FavoriteDB extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = FavoriteDB.class.getSimpleName();
 
     private Context mContext;
-    public Movie mMovie;
+    private Movie mMovie;
     private DBUpdateListener mDBUpdateListener;
 
     public static final int ADDED_TO_FAVORITE = 1;
@@ -30,10 +27,6 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
         mMovie = movie;
     }
 
-    public FavoriteDB(Activity mActivity, com.example.movietwo.models.Movie mMovie, DetailFragment updateListener) {
-
-    }
-
     @Override
     protected Void doInBackground(Void... params) {
         deleteOrSaveFavoriteMovie();
@@ -42,7 +35,7 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
 
 
     private void deleteOrSaveFavoriteMovie() {
-
+        //Check if the movie with this movie_id  exists in the db
 
         Log.d(TAG, MovieContract.MovieEntry.CONTENT_URI.getAuthority());
 
@@ -54,6 +47,7 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
                 null);
 
         // If it exists, delete the movie with that movie id
+        assert favMovieCursor != null;
         if (favMovieCursor.moveToFirst()) {
             int rowDeleted = mContext.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,
                     MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
@@ -66,10 +60,11 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
             }
 
         } else {
-
+            // Otherwise, insert it using the content resolver and the base URI
             ContentValues values = new ContentValues();
 
-
+            //Then add the data, along with the corresponding name of the data type,
+            //so the content provider knows what kind of value is being inserted.
             values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
             values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
             values.put(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE, mMovie.getPosterPath());
@@ -79,12 +74,12 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
             values.put(MovieContract.MovieEntry.COLUMN_BACKDROP_IMAGE, mMovie.getBackdropPath());
 
 
-
+            // Finally, insert movie data into the database.
             Uri insertedUri = mContext.getContentResolver().insert(
                     MovieContract.MovieEntry.CONTENT_URI,
                     values);
 
-
+            // The resulting URI contains the ID for the row.  Extract the movie rowId from the Uri.
             long movieRowId = ContentUris.parseId(insertedUri);
 
             if (movieRowId > 0) {
