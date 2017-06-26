@@ -46,14 +46,10 @@ public class MovieProvider {
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
-            /**
-             * Get all favourite movie records
-             */
+
             case FAV_MOVIES:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
-            /**
-             * Get a movie record
-             */
+
             case FAV_MOVIE_ITEM:
                 return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
 

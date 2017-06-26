@@ -4,6 +4,8 @@ package com.example.movietwo.controller;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.movietwo.networking.DataManager;
+
 public class AppController extends Application {
 
     private static final String TAG = AppController.class
@@ -23,9 +25,7 @@ public class AppController extends Application {
         mDataMan.init();
     }
 
-    /**
-     * Get the data manager instance
-     */
+
     public synchronized DataManager getDataManager() {
         return mDataMan;
     }

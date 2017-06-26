@@ -1,6 +1,5 @@
 package com.example.movietwo.data;
 
-
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +7,8 @@ import android.database.Cursor;
 import android.graphics.Movie;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.movietwo.interfaces.DBUpdateListener;
 
 public class FavoriteDB {
 
