@@ -2,7 +2,7 @@ package com.example.movietwo.models;
 
 
 
-class VideoTrailer {
+public class VideoTrailer {
 
     private String id;
     private String key;

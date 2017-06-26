@@ -18,7 +18,7 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
     private static final String TAG = FavoriteDB.class.getSimpleName();
 
     private Context mContext;
-    private Movie mMovie;
+    public Movie mMovie;
     private DBUpdateListener mDBUpdateListener;
 
     public static final int ADDED_TO_FAVORITE = 1;
@@ -42,7 +42,7 @@ public class FavoriteDB extends AsyncTask<Void, Void, Void> {
 
 
     private void deleteOrSaveFavoriteMovie() {
-        //Check if the movie with this movie_id  exists in the db
+
 
         Log.d(TAG, MovieContract.MovieEntry.CONTENT_URI.getAuthority());
 

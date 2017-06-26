@@ -1,7 +1,6 @@
 package com.example.movietwo.uiux;
 
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.SyncStateContract;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,6 +30,7 @@ import com.example.movietwo.models.Language;
 import com.example.movietwo.models.Movie;
 import com.example.movietwo.networking.DataManager;
 import com.example.movietwo.networking.DataRequester;
+import com.example.movietwo.util.Constants;
 import com.example.movietwo.util.NetworkUtils;
 import com.example.movietwo.util.ProgressBarUtil;
 import com.google.gson.Gson;
@@ -44,11 +43,15 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.movietwo.util.Constants.ARG_MOVIE_DETAIL;
+
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     public static final String SAVE_ALL_MOVIES_LIST = "ALL_MOVIES_LIST";
     public static final String SAVE_MOVIE_FILTER_SORT = "MOVIE_FILTER_SORT";
+
+    public static final String DETAIL_FRAGMENT_TAG = "DFTAG";
 
     @BindView(R.id.my_recycler_view)
     RecyclerView mRecyclerView;
@@ -112,7 +115,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     public MainFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -137,7 +140,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 !savedInstanceState.containsKey(SAVE_MOVIE_FILTER_SORT)) {
             Log.d(TAG, "savedInstanceState is null");
             mDatasetList = new ArrayList<Movie>();
-            mMovieFilterSort = SyncStateContract.Constants.MOST_POPULAR;
+            mMovieFilterSort = Constants.MOST_POPULAR;
         } else {
             mDatasetList = savedInstanceState.getParcelableArrayList(SAVE_ALL_MOVIES_LIST);
             mMovieFilterSort = savedInstanceState.getString(SAVE_MOVIE_FILTER_SORT);
@@ -190,7 +193,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     int pastVisibleItem =
                             ((GridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                     if ((visibleItemCount + pastVisibleItem) >= totalItemCount) {
-                        if (!mMovieFilterSort.equals(SyncStateContract.Constants.FAVORITE)) {
+                        if (!mMovieFilterSort.equals(Constants.FAVORITE)) {
 
                             if (NetworkUtils.isOnline(mActivity)) {
                                 mNoNetworkRetryLayout.setVisibility(View.GONE);
@@ -229,11 +232,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setActionBarTitle(String movieFilterSort) {
-        if (movieFilterSort.equals(SyncStateContract.Constants.HIGHEST_RATED)) {
+        if (movieFilterSort.equals(Constants.HIGHEST_RATED)) {
             mActionBar.setTitle(topRatedMovies);
-        } else if (movieFilterSort.equals(SyncStateContract.Constants.MOST_POPULAR)) {
+        } else if (movieFilterSort.equals(Constants.MOST_POPULAR)) {
             mActionBar.setTitle(mostPopularMovies);
-        } else if (movieFilterSort.equals(SyncStateContract.Constants.FAVORITE)) {
+        } else if (movieFilterSort.equals(Constants.FAVORITE)) {
             mActionBar.setTitle(myFavoriteMovies);
         }
     }
@@ -256,22 +259,20 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * @param refresh whether the adapter should be refreshed.
-     */
+
     private void fetchMovies(boolean refresh) {
         if (refresh) {
             mDatasetList.clear();
             mAdapter.notifyDataSetChanged();
             mPage = 1;
         }
-        if (mMovieFilterSort.equals(SyncStateContract.Constants.FAVORITE)) {
+        if (mMovieFilterSort.equals(Constants.FAVORITE)) {
             new LoadFavoriteMoviesTask().execute();
         } else {
             mProgressBar.show();
             Log.v(TAG, "Calling : get top rated/popular movies api according to filter");
             mDataMan.getMovies(
-                    new WeakReference<DataRequester>(mMoviesRequester), mMovieFilterSort,
+                    new WeakReference<>(mMoviesRequester), mMovieFilterSort,
                     mPage, Language.LANGUAGE_EN.getValue(), TAG);
 
         }
@@ -354,7 +355,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            // Retrieve movie records from fav movie table
+
             mDatasetList.clear();
             Uri favoriteMovieUri = MovieContract.MovieEntry.CONTENT_URI;
             Cursor favMovieCursor = mActivity.getContentResolver().query(
@@ -364,6 +365,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     null,
                     null);
 
+            assert favMovieCursor != null;
             if (favMovieCursor.moveToFirst()) {
                 do {
                     Movie movie = new Movie(favMovieCursor.getInt(COL_MOVIE_CONDITION_ID),

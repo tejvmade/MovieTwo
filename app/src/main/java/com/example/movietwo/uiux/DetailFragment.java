@@ -35,6 +35,7 @@ import com.example.movietwo.models.AllVideoTrailerResponse;
 import com.example.movietwo.models.Language;
 import com.example.movietwo.models.Movie;
 import com.example.movietwo.models.MovieReview;
+import com.example.movietwo.models.VideoTrailer;
 import com.example.movietwo.networking.DataManager;
 import com.example.movietwo.networking.DataRequester;
 import com.example.movietwo.util.AlertDialogUtil;
@@ -43,12 +44,14 @@ import com.example.movietwo.util.PabloPicasso;
 import com.example.movietwo.util.ProgressBarUtil;
 import com.example.movietwo.util.SPManagerFavMovies;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
 
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindColor;
@@ -109,7 +112,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
     private int mViewId;
     private Activity mActivity;
     private boolean mTwoPane;
-    private ArrayList<MovieReview> mMovieReviewList;
 
     public static DetailFragment newInstance(Bundle args) {
         DetailFragment fragment = new DetailFragment();
@@ -129,7 +131,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
             Bundle arg = getArguments();
             mMovie = arg.getParcelable(ARG_MOVIE_DETAIL);
 
-            Log.d(TAG, "Received movie from getArguments() :  " + mMovie.toString());
+            Log.d(TAG, "Received movie from getArguments() :  " + (mMovie != null ? mMovie.toString() : null));
         }
 
         mActivity = getActivity();
@@ -144,7 +146,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, view);
 
@@ -179,22 +181,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
                 .into(mIvPoster);
 
         PabloPicasso.with(mActivity).load(mMovie.getBackdropPath()).error(R.drawable.heart_filled).
-                into(mIvBackDrop, new ItemTouchHelper.Callback() {
-                    @Override
-                    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                        return 0;
-                    }
-
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-                    }
-
+                into(mIvBackDrop, new Callback() {
                     @Override
                     public void onSuccess() {
                         Log.d(TAG, "applyPalette mTwoPane : " + mTwoPane);
@@ -204,6 +191,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
                                 public void onGenerated(Palette palette) {
                                     applyPalette(palette);
                                 }
+
                             });
                         }
 
@@ -257,7 +245,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
             mProgressBar.show();
             Log.v(TAG, "Calling : get movie reviews api");
             mDataMan.getMovieReviews(
-                    new WeakReference<DataRequester>(mMovieReviewRequester), mMovie.getId(),
+                    new WeakReference<>(mMovieReviewRequester), mMovie.getId(),
                     Language.LANGUAGE_EN.getValue(), TAG);
 
         } else {
@@ -280,7 +268,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
                     mProgressBar.show();
                     Log.v(TAG, "Calling : get video trailer api");
                     mDataMan.getVideoTrailers(
-                            new WeakReference<DataRequester>(mVideoTrailerRequester), mMovie.getId(),
+                            new WeakReference<>(mVideoTrailerRequester), mMovie.getId(),
                             Language.LANGUAGE_EN.getValue(), TAG);
 
                 } else {
@@ -295,7 +283,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
                     mProgressBar.show();
                     Log.v(TAG, "Calling : get video trailer api to share the first trailer");
                     mDataMan.getVideoTrailers(
-                            new WeakReference<DataRequester>(mVideoTrailerRequester), mMovie.getId(),
+                            new WeakReference<>(mVideoTrailerRequester), mMovie.getId(),
                             Language.LANGUAGE_EN.getValue(), TAG);
 
                 } else {
@@ -353,7 +341,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
             }
 
 
-            Log.v(TAG, "Success : video trailer data : " + new Gson().toJson(respObj).toString());
+            Log.v(TAG, "Success : video trailer data : " + new Gson().toJson(respObj));
             final AllVideoTrailerResponse response = (AllVideoTrailerResponse) respObj;
 
 
@@ -446,13 +434,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
             }
 
             mProgressBar.hide();
-            Log.v(TAG, "Success : movie reviews data : " + new Gson().toJson(respObj).toString());
+            Log.v(TAG, "Success : movie reviews data : " + new Gson().toJson(respObj));
             final AllMovieReviewResponse response = (AllMovieReviewResponse) respObj;
 
 
             if (response != null && response.getResults() != null && response.getResults().size() > 0) {
 
-                mMovieReviewList = response.getResults();
+                ArrayList<MovieReview> mMovieReviewList = response.getResults();
 
                 int noOfReviews = mMovieReviewList.size();
 
@@ -472,7 +460,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
         CardView reviewLayout = null;
         if (position == 0) {
             reviewLayout = mReviewLayout0;
-            ((TextView) reviewLayout.findViewById(R.id.tv_reviews_text)).setVisibility(View.VISIBLE);
+            reviewLayout.findViewById(R.id.tv_reviews_text).setVisibility(View.VISIBLE);
             reviewLayout.findViewById(R.id.line_reviews_heading).setVisibility(View.VISIBLE);
         } else if (position == 1) {
             reviewLayout = mReviewLayout1;

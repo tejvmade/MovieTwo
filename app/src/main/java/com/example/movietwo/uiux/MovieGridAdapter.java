@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.movietwo.uiux.MainFragment.DETAIL_FRAGMENT_TAG;
 import static com.example.movietwo.util.Constants.ARG_MOVIE_DETAIL;
 
 public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -129,9 +130,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         cusHolder.mTVRating.setText(String.valueOf(mDatasetList.get(position).getVoteAverage()));
         String completePosterPath = mDatasetList.get(position).getPosterPath();
         PabloPicasso.with(mContext).load(completePosterPath).
-                placeholder(R.drawable.heart_filled)
-                .error(R.drawable.heart_filled
-                .into(cusHolder.mIVThumbNail);
+                placeholder(R.drawable.heart_filled).error(R.drawable.heart_filled).into(cusHolder.mIVThumbNail);
         cusHolder.mIVThumbNail.setVisibility(View.VISIBLE);
         setEnterAnimation(cusHolder.mCardView, position);
     }

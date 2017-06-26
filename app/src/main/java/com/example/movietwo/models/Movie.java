@@ -31,7 +31,6 @@ public class Movie implements Parcelable{
     private double voteAverage;
 
     public Movie(int id, String title, String posterPath, String overview, double voteAverage, String releaseDate, String backdropPath) {
-
         this.id = id;
         this.title = title;
         this.posterPath = posterPath;
@@ -40,7 +39,12 @@ public class Movie implements Parcelable{
         this.releaseDate = releaseDate;
         this.backdropPath = backdropPath;
 
-
+//        this.adult = adult;
+//        this.originalTitle = originalTitle;
+//        this.originalLanguage = originalLanguage;
+//        this.popularity = popularity;
+//        this.voteCount = voteCount;
+//        this.video = video;
 
     }
 

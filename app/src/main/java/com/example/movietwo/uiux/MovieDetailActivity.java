@@ -9,6 +9,10 @@ import com.example.movietwo.uiux.DetailFragment;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = MovieDetailActivity.class.getSimpleName();
+    public static final String DETAIL_FRAGMENT_TAG = "DFTAG";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +26,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public void addDetailFragment() {
         if (!isFinishing()) {
-            // In case this activity was started with special instructions from an Intent,
-            // pass the Intent's extras to the fragment as arguments
+
             DetailFragment detailFragment = DetailFragment.newInstance(getIntent().getExtras());
 
             FragmentManager fragmentManager = getSupportFragmentManager();

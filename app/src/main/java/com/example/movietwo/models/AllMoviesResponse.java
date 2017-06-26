@@ -6,6 +6,7 @@ import android.graphics.Movie;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllMoviesResponse {
 
@@ -20,7 +21,7 @@ public class AllMoviesResponse {
         return page;
     }
 
-    public ArrayList<Movie> getResults() {
+    public List<com.example.movietwo.models.Movie> getResults() {
         return results;
     }
 

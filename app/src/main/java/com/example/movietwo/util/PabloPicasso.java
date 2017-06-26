@@ -7,7 +7,7 @@ import com.squareup.picasso.Picasso;
 
 public class PabloPicasso {
 
-    private static Picasso instance;
+    public static Picasso instance;
 
     public static Picasso with(Context context) {
         if (instance == null) {
