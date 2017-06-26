@@ -25,6 +25,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/iv_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/backdrop_height"
@@ -58,10 +59,10 @@
             android:paddingBottom="@dimen/activity_vertical_margin">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/iv_poster"
                 android:layout_width="@dimen/poster_width"
                 android:layout_height="@dimen/poster_height"
-                android:layout_marginLeft="@dimen/margin_large"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
                 android:elevation="@dimen/elevation_low" />
@@ -99,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_release"
                 android:layout_marginLeft="@dimen/margin_174dp"
-                android:drawableLeft="@mipmap/rating_star_big"
+                android:drawableLeft="@drawable/rating_star_big"
                 android:drawablePadding="8dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="bottom"
@@ -154,7 +155,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/margin_146dp"
-        android:src="@mipmap/heart_empty"
+        android:src="@drawable/heart_empty"
         app:backgroundTint="@color/cardview_light_background"
         app:elevation="6dp"
         app:fabSize="mini"
