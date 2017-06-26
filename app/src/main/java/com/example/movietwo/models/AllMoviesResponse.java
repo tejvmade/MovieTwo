@@ -11,7 +11,7 @@ import java.util.List;
 public class AllMoviesResponse {
 
     private int page;
-    private ArrayList<Movie> results;
+    public ArrayList<Movie> results;
     @SerializedName("total_results")
     private long totalResults;
     @SerializedName("total_pages")
@@ -21,8 +21,8 @@ public class AllMoviesResponse {
         return page;
     }
 
-    public ArrayList<Movie> getResults() {
-        return results;
+    public ArrayList<com.example.movietwo.models.Movie> getResults() {
+    return null;
     }
 
     public long getTotalResults() {
