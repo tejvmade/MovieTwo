@@ -32,6 +32,8 @@ import com.example.movietwo.models.Language;
 import com.example.movietwo.models.Movie;
 import com.example.movietwo.networking.DataManager;
 import com.example.movietwo.networking.DataRequester;
+import com.example.movietwo.util.NetworkUtils;
+import com.example.movietwo.util.ProgressBarUtil;
 import com.google.gson.Gson;
 
 import java.lang.ref.WeakReference;
@@ -40,6 +42,7 @@ import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 
@@ -71,7 +74,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private ArrayList<Movie> mDatasetList;
     private DataManager mDataMan;
     private ProgressBarUtil mProgressBar;
-    private ActionBar mActionBar;
+    private android.support.v7.app.ActionBar mActionBar;
 
     private SharedPreferences pref;
     private String mMovieFilterSort;

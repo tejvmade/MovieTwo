@@ -4,13 +4,13 @@ package com.example.movietwo.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-class SPManagerFavMovies {
+public class SPManagerFavMovies {
 
     private static final String PREFERENCE_NAME_FAV_MOVIES = "app_state_fav_movies";
     private static SPManagerFavMovies instance = null;
     private final SharedPreferences sharedPreferences;
 
-    private SPManagerFavMovies(Context context) {
+    public SPManagerFavMovies(Context context) {
         sharedPreferences = context.getApplicationContext()
                 .getSharedPreferences(PREFERENCE_NAME_FAV_MOVIES, Context.MODE_PRIVATE);
     }

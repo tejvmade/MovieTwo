@@ -8,13 +8,13 @@ import android.provider.BaseColumns;
 
 public class MovieContract {
 
-    private static final String CONTENT_AUTHORITY = "com.example.movietwo";
+   public static final String CONTENT_AUTHORITY = "com.example.movietwo";
 
 
-    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
 
-    private static final String PATH_FAVOURITE_MOVIE = "favourite_movie";
+    public static final String PATH_FAVOURITE_MOVIE = "favourite_movie";
 
 
 
@@ -23,9 +23,9 @@ public class MovieContract {
         static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVOURITE_MOVIE).build();
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAVOURITE_MOVIE;
-        public static final String CONTENT_ITEM_TYPE =
+        static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAVOURITE_MOVIE;
 
         // Table name
@@ -41,7 +41,7 @@ public class MovieContract {
         public static final String COLUMN_RELEASE_DATE = "release_date";
         public static final String COLUMN_BACKDROP_IMAGE = "backdrop_image";
 
-        public static Uri buildMovieUri(long id) {
+        static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

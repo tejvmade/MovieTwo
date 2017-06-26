@@ -2,11 +2,11 @@ package com.example.movietwo.util;
 
 
 
-public class Constants {
+public final class Constants {
 
-    public final static String MOST_POPULAR = "most_popular";
-    public final static String HIGHEST_RATED = "highest_rated";
-    public final static String FAVORITE = "favorite";
+    public  static final String MOST_POPULAR = "most_popular";
+    public static final String HIGHEST_RATED = "highest_rated";
+    public static final String FAVORITE = "favorite";
 
     public static final String ARG_MOVIE_DETAIL = "MOVIE_DETAIL";
 

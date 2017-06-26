@@ -2,7 +2,7 @@ package com.example.movietwo.models;
 
 
 
-public class Language {
+public enum Language {
 
     LANGUAGE_EN("en"),
     LANGUAGE_Hi("hi");

@@ -1,7 +1,7 @@
 package com.example.movietwo.networking;
 
 
-public class DataRequester {
+public interface DataRequester {
 
     void onFailure(Throwable error);
 

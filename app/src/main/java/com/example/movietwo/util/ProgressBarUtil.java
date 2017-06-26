@@ -35,7 +35,7 @@ public class ProgressBarUtil {
         rl.setVisibility(View.VISIBLE);
     }
 
-    private void hide() {
+    public void hide() {
         rl.setVisibility(View.GONE);
     }
 }

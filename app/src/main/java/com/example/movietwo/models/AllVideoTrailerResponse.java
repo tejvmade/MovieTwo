@@ -1,6 +1,8 @@
 package com.example.movietwo.models;
 
 
+import java.util.ArrayList;
+
 public class AllVideoTrailerResponse {
 
     private int id;

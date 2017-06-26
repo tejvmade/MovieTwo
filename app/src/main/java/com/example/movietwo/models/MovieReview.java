@@ -37,8 +37,7 @@ public class MovieReview implements Parcelable {
 
     public static final Parcelable.Creator<MovieReview> CREATOR = new Parcelable.Creator<MovieReview>() {
         public MovieReview createFromParcel(Parcel source) {
-            MovieReview movieReview = new MovieReview(source);
-            return movieReview;
+            return new MovieReview(source);
         }
 
         public MovieReview[] newArray(int size) {

@@ -2,7 +2,7 @@ package com.example.movietwo.interfaces;
 
 
 
-public class DBUpdateListener {
+public interface DBUpdateListener {
 
     void onSuccess(int operationType);
 

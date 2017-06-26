@@ -1,16 +1,19 @@
 package com.example.movietwo.data;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Movie;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.movietwo.interfaces.DBUpdateListener;
+import com.example.movietwo.uiux.DetailFragment;
 
-public class FavoriteDB {
+public class FavoriteDB extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = FavoriteDB.class.getSimpleName();
 
@@ -27,16 +30,17 @@ public class FavoriteDB {
         mMovie = movie;
     }
 
+    public FavoriteDB(Activity mActivity, com.example.movietwo.models.Movie mMovie, DetailFragment updateListener) {
+
+    }
+
     @Override
     protected Void doInBackground(Void... params) {
         deleteOrSaveFavoriteMovie();
         return null;
     }
 
-    /**
-     * Method to handle deletion of a favorite movie if it exists in the favourite movie database
-     * or to insert it if doesn't exist
-     */
+
     private void deleteOrSaveFavoriteMovie() {
         //Check if the movie with this movie_id  exists in the db
 
@@ -62,11 +66,10 @@ public class FavoriteDB {
             }
 
         } else {
-            // Otherwise, insert it using the content resolver and the base URI
+
             ContentValues values = new ContentValues();
 
-            //Then add the data, along with the corresponding name of the data type,
-            //so the content provider knows what kind of value is being inserted.
+
             values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getId());
             values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
             values.put(MovieContract.MovieEntry.COLUMN_POSTER_IMAGE, mMovie.getPosterPath());
@@ -76,12 +79,12 @@ public class FavoriteDB {
             values.put(MovieContract.MovieEntry.COLUMN_BACKDROP_IMAGE, mMovie.getBackdropPath());
 
 
-            // Finally, insert movie data into the database.
+
             Uri insertedUri = mContext.getContentResolver().insert(
                     MovieContract.MovieEntry.CONTENT_URI,
                     values);
 
-            // The resulting URI contains the ID for the row.  Extract the movie rowId from the Uri.
+
             long movieRowId = ContentUris.parseId(insertedUri);
 
             if (movieRowId > 0) {

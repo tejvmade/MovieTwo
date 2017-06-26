@@ -9,7 +9,7 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-class AlertDialogUtil { private static final String LOG_TAG = AlertDialogUtil.class.getSimpleName();
+public class AlertDialogUtil { private static final String LOG_TAG = AlertDialogUtil.class.getSimpleName();
 
     public static void createAlert(Context context, String title, String msg,
                                    String positiveButtonText, DialogInterface.OnClickListener positiveButtonListener,

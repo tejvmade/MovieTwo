@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.movietwo.models.AllMovieReviewResponse;
 import com.example.movietwo.models.AllMoviesResponse;
 import com.example.movietwo.models.AllVideoTrailerResponse;
+import com.example.movietwo.util.Constants;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -61,7 +62,8 @@ public class DataManager {
     }
 
     private <T> void addToRequestQueue(Request<T> request, String tag) {
-        // set the default tag if tag is empty
+
+
         request.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         mRequestQueue.add(request);
     }

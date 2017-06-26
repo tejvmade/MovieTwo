@@ -9,8 +9,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +28,8 @@ import android.widget.TextView;
 
 import com.example.movietwo.R;
 import com.example.movietwo.controller.AppController;
+import com.example.movietwo.data.FavoriteDB;
+import com.example.movietwo.interfaces.DBUpdateListener;
 import com.example.movietwo.models.AllMovieReviewResponse;
 import com.example.movietwo.models.AllVideoTrailerResponse;
 import com.example.movietwo.models.Language;
@@ -30,6 +37,11 @@ import com.example.movietwo.models.Movie;
 import com.example.movietwo.models.MovieReview;
 import com.example.movietwo.networking.DataManager;
 import com.example.movietwo.networking.DataRequester;
+import com.example.movietwo.util.AlertDialogUtil;
+import com.example.movietwo.util.NetworkUtils;
+import com.example.movietwo.util.PabloPicasso;
+import com.example.movietwo.util.ProgressBarUtil;
+import com.example.movietwo.util.SPManagerFavMovies;
 import com.google.gson.Gson;
 
 import java.lang.ref.WeakReference;
@@ -42,8 +54,10 @@ import java.util.Locale;
 import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.example.movietwo.data.FavoriteDB.ADDED_TO_FAVORITE;
+import static com.example.movietwo.util.Constants.ARG_MOVIE_DETAIL;
 
 public class DetailFragment extends Fragment implements View.OnClickListener, DBUpdateListener {
 
@@ -160,12 +174,27 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
         mTvOverview.setText(mMovie.getOverview());
 
         PabloPicasso.with(mActivity).load(mMovie.getPosterPath()).fit()
-                .placeholder(R.mipmap.placeholder)
-                .error(R.mipmap.placeholder)
+                .placeholder(R.drawable.heart_filled)
+                .error(R.drawable.heart_filled)
                 .into(mIvPoster);
 
-        PabloPicasso.with(mActivity).load(mMovie.getBackdropPath()).error(R.mipmap.placeholder).
+        PabloPicasso.with(mActivity).load(mMovie.getBackdropPath()).error(R.drawable.heart_filled).
                 into(mIvBackDrop, new ItemTouchHelper.Callback() {
+                    @Override
+                    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                    }
+
                     @Override
                     public void onSuccess() {
                         Log.d(TAG, "applyPalette mTwoPane : " + mTwoPane);
@@ -192,9 +221,9 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
 
 
         if (mSPManagerFavMovies.getBoolean(mMovie.getId())) {
-            mButtonFavorite.setImageResource(R.mipmap.heart_filled);
+            mButtonFavorite.setImageResource(R.drawable.heart_filled);
         } else {
-            mButtonFavorite.setImageResource(R.mipmap.heart_empty);
+            mButtonFavorite.setImageResource(R.drawable.heart_empty);
         }
 
         return view;
@@ -241,7 +270,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
         switch (v.getId()) {
             case R.id.fab_favorite:
 
-                UpdateFavouriteMovieDBTask favouriteMovieDBTask = new UpdateFavouriteMovieDBTask(mActivity, mMovie, this);
+                FavoriteDB favouriteMovieDBTask = new FavoriteDB(mActivity, mMovie, this);
                 favouriteMovieDBTask.execute();
                 break;
 
@@ -285,11 +314,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
                 String operation;
                 if (operationType == ADDED_TO_FAVORITE) {
                     operation = "added to favorite";
-                    mButtonFavorite.setImageResource(R.mipmap.heart_filled);
+                    mButtonFavorite.setImageResource(R.drawable.heart_filled);
                     mSPManagerFavMovies.putBoolean(mMovie.getId(), true);
                 } else {
                     operation = "removed from favorite";
-                    mButtonFavorite.setImageResource(R.mipmap.heart_empty);
+                    mButtonFavorite.setImageResource(R.drawable.heart_empty);
                     mSPManagerFavMovies.putBoolean(mMovie.getId(), false);
                 }
 
@@ -304,7 +333,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener, DB
     }
 
 
-    private DataRequester mVideoTrailerRequester = new DataRequester() {
+    public DataRequester mVideoTrailerRequester = new DataRequester() {
 
         @Override
         public void onFailure(Throwable error) {

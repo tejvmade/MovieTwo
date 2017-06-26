@@ -3,6 +3,8 @@ package com.example.movietwo.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class AllMovieReviewResponse {
 
     int id;
