@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.movietwo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +22,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".uiux.MovieDetailActivity"></activity>
+
+        <activity android:name=".uiux.MovieDetailActivity"
+            android:label="@string/title_activity_movie_detail"
+            android:parentActivityName=".uiux.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.movietwo.uiux.MainActivity"/>
+
+        </activity>
+
+
+        <activity
+            android:name=".uiux.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".uiux.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.movietwo.uiux.MainActivity" />
+        </activity>
+
+        <provider
+            android:name=".data.MovieProvider"
+            android:authorities="com.example.movietwo" />
+
+
     </application>
 
 </manifest>

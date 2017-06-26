@@ -47,13 +47,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addMainFragment() {
-        if (!isFinishing()) {
-            MainFragment mainFragment = MainFragment.newInstance();
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.main_grid_container, mainFragment, MAIN_FRAGMENT_TAG)
-                    .commit();
-        }
     }
 }
