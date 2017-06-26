@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.movietwo.MainActivity;
 import com.example.movietwo.R;
 import com.example.movietwo.controller.AppController;
 import com.example.movietwo.data.MovieContract;
