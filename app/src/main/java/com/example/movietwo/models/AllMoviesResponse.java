@@ -21,7 +21,7 @@ public class AllMoviesResponse {
         return page;
     }
 
-    public List<com.example.movietwo.models.Movie> getResults() {
+    public ArrayList<Movie> getResults() {
         return results;
     }
 
